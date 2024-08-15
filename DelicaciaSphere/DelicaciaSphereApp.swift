@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct DelicaciaSphereApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AuthenticationScreen()
         }
+        .modelContainer(for: [User.self])
     }
 }
