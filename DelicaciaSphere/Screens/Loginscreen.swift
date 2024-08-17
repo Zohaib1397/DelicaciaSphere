@@ -10,7 +10,8 @@ import SwiftData
 
 struct Loginscreen: View {
     @Binding var showSignupScreen: Bool
-    @AppStorage("user") var userData: Data?
+    
+    @EnvironmentObject var viewModel: AuthenticationViewModel
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var path: [NavigationDestinations] = []
@@ -41,12 +42,7 @@ struct Loginscreen: View {
                 }
                 
                 Button{
-                    let user = UserPersistent(email: username, username: username, password: password)
-                    do {
-                        let newUser = try? JSONEncoder().encode(user)
-                        userData = newUser
-                    }
-                    
+                    viewModel.loginUser(email: username, password: password)
                 } label: {
                     Text("Login")
                         .font(.headline)

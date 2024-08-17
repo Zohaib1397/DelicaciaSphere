@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Signupscreen: View {
+    @EnvironmentObject var viewModel: AuthenticationViewModel
     @Environment(\.modelContext) var modelContext
     @Binding var showSignupScreen: Bool
     @State private var userField: User = User(name: "", email: "", username: "", password: "")
@@ -28,8 +29,7 @@ struct Signupscreen: View {
             CustomTextField(title: "Confirm Password", icon: "lock", isSecureField: true, fieldData: $confirmPassword)
             Spacer()
             Button{
-                let newUser = User(name: userField.name, email: userField.email, username: userField.username, password: userField.password)
-                modelContext.insert(newUser)
+                modelContext.insert(User(name: userField.name, email: userField.email, username: userField.username, password: userField.password))
                 withAnimation{
                     showSignupScreen.toggle()
                 }

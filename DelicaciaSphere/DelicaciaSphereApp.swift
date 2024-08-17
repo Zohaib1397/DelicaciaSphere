@@ -10,9 +10,11 @@ import SwiftData
 
 @main
 struct DelicaciaSphereApp: App {
+    
+    var authenticationViewModel = AuthenticationViewModel()
     var body: some Scene {
         WindowGroup {
-            AuthenticationScreen()
+            AuthenticationScreen().environmentObject(authenticationViewModel)
         }
         .modelContainer(for: [User.self])
     }
