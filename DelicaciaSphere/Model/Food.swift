@@ -20,14 +20,14 @@ class Food: Identifiable {
     var name: String = ""
     var description: String = ""
     var image: String
-    var kcal: Int
+    var kcal: CGFloat
     var proteins: CGFloat
     var fats: CGFloat
     var carbo: CGFloat
     var price: CGFloat
     var category: FoodCategory
     
-    init(name: String, description: String, image: String, kcal: Int, proteins: CGFloat, fats: CGFloat, carbo: CGFloat, price: CGFloat, category: FoodCategory) {
+    init(name: String, description: String, image: String, kcal: CGFloat, proteins: CGFloat, fats: CGFloat, carbo: CGFloat, price: CGFloat, category: FoodCategory) {
         self.name = name
         self.description = description
         self.image = image
