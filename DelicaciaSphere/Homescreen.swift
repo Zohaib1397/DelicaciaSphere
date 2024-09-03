@@ -22,8 +22,10 @@ struct Homescreen: View {
     
     var body: some View {
             ZStack {
-                ScrollView {
-                    ZStack {
+                ZStack {
+                    Color(.systemBackground)
+                        .ignoresSafeArea()
+                    ScrollView {
                         VStack {
                             TopBar()
                             OfferCard()
@@ -220,22 +222,13 @@ struct CategoryCard: View{
 struct TopBar: View {
     var body: some View {
         HStack{
-            Circle()
-                .frame(width: 55, height: 55)
-                .foregroundStyle(.white)
-                .shadow(color: Color(.systemGray4), radius: 30)
-                .overlay{
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 24))
-                }
-            Spacer()
-            VStack{
-                Text("Location")
+            
+            VStack(alignment: .leading, spacing: 0){
+                Text("Deliver now")
                     .font(.system(.callout, design: .rounded))
                     .foregroundStyle(.gray)
                 
                 HStack{
-                    Image(systemName: "location.circle")
                     Text("Islamabad, Pakistan")
                         .font(.system(.headline, design: .rounded))
                     Image(systemName: "chevron.down")
