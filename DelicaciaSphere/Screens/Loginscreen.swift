@@ -18,57 +18,78 @@ struct Loginscreen: View {
     @State var isAuthentication = false
     var body: some View {
         NavigationStack(path: $path) {
-            VStack(spacing: 20){
-                Spacer()
-                Image("Logo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200)
-                Spacer()
-                Text("Login")
-                    .font(.system(.largeTitle, design: .rounded))
-                    .fontWeight(.black)
-                
-                CustomTextField(title: "Username or Email", icon: "person", fieldData: $username)
-                CustomTextField(title: "Password", icon: "lock", isSecureField: true, fieldData: $password)
-                
-                HStack{
-                    Spacer()
-                    Button{
-                        
-                    } label : {
-                        Text("Forget Password?")
-                    }
-                }
-                
-                Button{
-                    viewModel.loginUser(email: username, password: password)
-                } label: {
+            ZStack {
+                Group{
+                    Color(.secondarySystemBackground)
+                        .ignoresSafeArea()
+                    Image("doodle")
+                        .resizable()
+                        .ignoresSafeArea()
+                } //Background Color + Doodle
+                VStack(spacing: 10){
+                    
+                    Image("Logo")
+                        .resizable()
+                        .scaledToFit()
+                        .shadow(radius: 29, x: 0, y: 4)
+                        .frame(maxWidth: 244)
+                    
                     Text("Login")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding(10)
+                        .font(.system(.largeTitle, design: .rounded))
+                        .fontWeight(.black)
+                    
+                    CustomTextField(title: "Email or Phone Number", icon: "envelope", fieldData: $username)
+                    CustomTextField(title: "Password", icon: "lock", isSecureField: true, fieldData: $password)
+                    
+                    HStack{
+                        Spacer()
+                        Button{
+                            
+                        } label : {
+                            Text("Forget Password?")
+                        }
+                        .tint(.secondary)
+                    }
+                    
+                    Button{
+                        viewModel.loginUser(email: username, password: password)
+                    } label: {
+                        Text("Login")
+                            .frame(maxWidth: .infinity)
+                    }
+                    
+                    .controlSize(.large)
+                    .buttonStyle(.borderedProminent)
+                    .tint(.accentColor)
+                    Button{
+                        viewModel.loginUser(email: username, password: password)
+                    } label: {
+                        Text("Continue as Guest")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .controlSize(.large)
+                    .buttonStyle(.bordered)
+                    .tint(.accentColor)
+                    HStack{
+                        Text("Don't have an account?")
+                        Button{
+                            withAnimation{
+                                showSignupScreen.toggle()
+                            }
+                        } label: {
+                            Text("Sign up")
+                                .underline()
+                        }
+                    }
+                    Spacer()
+                }
+                .padding()
+                .navigationTitle("Login")
+                .navigationBarHidden(true)
+                .navigationDestination(for: NavigationDestinations.self){ destination in
+                    destination.view
                 }
                 
-                .buttonStyle(.borderedProminent)
-                .tint(.orange)
-                HStack{
-                    Text("Don't have an account?")
-                    Button{
-                        withAnimation{
-                            showSignupScreen.toggle()
-                        }
-                    } label: {
-                        Text("Sign up")
-                    }
-                }
-                Spacer()
-            }
-            .padding()
-            .navigationTitle("Login")
-            .navigationBarHidden(true)
-            .navigationDestination(for: NavigationDestinations.self){ destination in
-                destination.view
             }
         }
     }
@@ -100,9 +121,12 @@ struct CustomTextField: View {
             }
             if isSecureField {
                 Button{
-                    showPassword.toggle()
+                    withAnimation{
+                        showPassword.toggle()
+                    }
                 } label: {
                     Image(systemName: showPassword ? "eye" :"eye.slash")
+                        .contentTransition(.symbolEffect(.replace))
                 }
                 .padding(.horizontal, 13)
                 .tint(Color(.systemGray))
@@ -116,17 +140,16 @@ struct CustomTextField: View {
 }
 
 struct TextFieldModifier : ViewModifier {
-    
     var icon: String
-    
     func body(content: Content) -> some View {
         content
             .padding()
-            .padding(.horizontal, 25)
-            .background(Color(.systemGray6))
+            .padding(.horizontal, 30)
+            .background(Color(.systemBackground))
             .clipShape(.rect(cornerRadius: 12))
             .overlay (alignment: .leading){
                 Image(systemName: icon)
+                    .frame(width: 20)
                     .padding(.horizontal, 13)
             }
     }

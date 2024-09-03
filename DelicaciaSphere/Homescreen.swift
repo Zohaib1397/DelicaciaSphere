@@ -14,44 +14,63 @@ struct Homescreen: View {
         GridItem(.flexible()),
         GridItem(.flexible()),
     ]
+    
+    @State var selectedFoodItem: Food?
+    @State var showDetailScreen = false
+    @Namespace var imageTransition
+    @State var searchText: String = ""
+    
     var body: some View {
-        ScrollView {
             ZStack {
-                VStack {
-                    TopBar()
-                    OfferCard()
-                    LazyVGrid(columns: [
-                        GridItem(.flexible()),
-                        GridItem(.flexible()),
-                        GridItem(.flexible()),
-                        GridItem(.flexible()),
-                                       ]){
-                        CategoryCard(image: "burger", text: "Burger")
-                        CategoryCard(image: "chicken", text: "Chicken")
-                        CategoryCard(image: "fries", text: "Fries")
-                        CategoryCard(image: "drink", text: "Drink")
-                    }
-                    HStack{
-                        Text("Recommended for you")
-                            .font(.system(.title2, design: .rounded))
-                            .fontWeight(.bold)
-                        Spacer()
-                        Text("See More")
-                            .underline()
-                            .font(.system(.callout))
-                    }
-                    LazyVGrid(columns: columns){
-                        ForEach(foodList){ foodItem in
-                            ProductCard(foodItem: foodItem)
+                ScrollView {
+                    ZStack {
+                        VStack {
+                            TopBar()
+                            OfferCard()
+                            LazyVGrid(columns: [
+                                GridItem(.flexible()),
+                                GridItem(.flexible()),
+                                GridItem(.flexible()),
+                                GridItem(.flexible()),
+                            ]){
+                                CategoryCard(image: "burger", text: "Burger")
+                                CategoryCard(image: "chicken", text: "Chicken")
+                                CategoryCard(image: "fries", text: "Fries")
+                                CategoryCard(image: "drink", text: "Drink")
+                            }
+                            HStack{
+                                Text("Recommended for you")
+                                    .font(.system(.title2, design: .rounded))
+                                    .fontWeight(.bold)
+                                Spacer()
+                                Text("See More")
+                                    .underline()
+                                    .font(.system(.callout))
+                            }
+                            LazyVGrid(columns: columns){
+                                ForEach(foodList){ foodItem in
+                                    ProductCard(foodItem: foodItem, imageTransition: imageTransition)
+                                        .onTapGesture {
+                                            withAnimation{
+                                                showDetailScreen = true
+                                                selectedFoodItem = foodItem
+                                            }
+                                        }
+                                }
+                                
+                            }
+                            
                         }
-                        
+                        .padding()
                     }
                     
                 }
-                .padding()
+                .background(Color(.systemGray6))
+                .blur(radius: showDetailScreen ? 40 : 0)
+                if showDetailScreen {
+                    FoodDetailScreen(foodItem: selectedFoodItem ?? foodList.first!, showDetailScreen: $showDetailScreen, imageTransition: imageTransition)
+                }
             }
-            
-        }.background(Color(.systemGray6))
     }
 }
 
@@ -60,7 +79,8 @@ struct Homescreen: View {
 }
 
 #Preview("Product Card") {
-    ProductCard(foodItem: foodList.first!)
+    @Previewable @Namespace var testing
+    ProductCard(foodItem: foodList.first!, imageTransition:  testing)
 }
 
 #Preview("Animated Heart", traits: .sizeThatFitsLayout){
@@ -122,7 +142,8 @@ struct MeasureHeightModifier: ViewModifier {
 struct ProductCard: View {
     var foodItem: Food
     @State private var titleHeight: CGFloat = 0
-
+    let imageTransition: Namespace.ID
+    
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {
@@ -130,6 +151,7 @@ struct ProductCard: View {
                     .resizable()
                     .scaledToFit()
                     .aspectRatio(contentMode: .fit)
+                    .matchedGeometryEffect(id: foodItem.id, in: imageTransition)
                 
                 Text(foodItem.name)
                     .font(.system(.headline, design: .rounded))

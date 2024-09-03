@@ -9,6 +9,8 @@ import SwiftUI
 
 struct FoodDetailScreen: View {
     var foodItem: Food
+    @Binding var showDetailScreen: Bool
+    var imageTransition: Namespace.ID
     var body: some View {
         VStack{
             HStack{
@@ -20,9 +22,15 @@ struct FoodDetailScreen: View {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 24))
                     }
+                    .onTapGesture {
+                        withAnimation{
+                            showDetailScreen.toggle()
+                        }
+                    }
                 Spacer()
                 Text("Details")
-                    .font(.system(.headline, design: .rounded))
+                    .font(.system(.title, design: .rounded))
+                    .fontWeight(.bold)
                     .foregroundStyle(.white)
                 Spacer()
                 Circle()
@@ -39,6 +47,7 @@ struct FoodDetailScreen: View {
                         .resizable()
                         .scaledToFit()
                         .shadow(radius: 10, y: 30)
+                        .matchedGeometryEffect(id: foodItem.id, in: imageTransition)
                     Text(foodItem.name)
                         .font(.system(.title, design: .rounded))
                         .fontWeight(.bold)
@@ -97,7 +106,9 @@ struct FoodDetailScreen: View {
                 Button{
                     
                 } label :{
-                    Text("Buy Now")
+                    Text("$\(foodItem.price, specifier: "%.2f") - Buy Now")
+                        .font(.system(.title3, design: .rounded))
+                        .fontWeight(.semibold)
                         .frame(maxWidth: .infinity)
                 }
                 .tint(.green)
@@ -106,12 +117,14 @@ struct FoodDetailScreen: View {
             }
             .shadow(color: Color(.white), radius: 30)
             .padding(.horizontal)
+            .background(Color.white.blur(radius: 30))
         }
     }
 }
 
 #Preview {
-    FoodDetailScreen(foodItem: foodList.first!)
+    @Previewable @Namespace var testing
+    FoodDetailScreen(foodItem: foodList.first!, showDetailScreen: .constant(false), imageTransition: testing)
 }
 
 struct Properties_SubView: View{

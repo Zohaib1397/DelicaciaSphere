@@ -29,8 +29,18 @@
 		52E26B062C6BD25500C08E37 /* DelicaciaSphereUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DelicaciaSphereUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5235A1B42C87299300B89CEC /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 52E26AEB2C6BD25200C08E37 /* DelicaciaSphere */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		52E26AEE2C6BD25200C08E37 /* DelicaciaSphere */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DelicaciaSphere; sourceTree = "<group>"; };
+		52E26AEE2C6BD25200C08E37 /* DelicaciaSphere */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (5235A1B42C87299300B89CEC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DelicaciaSphere; sourceTree = "<group>"; };
 		52E26AFF2C6BD25500C08E37 /* DelicaciaSphereTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DelicaciaSphereTests; sourceTree = "<group>"; };
 		52E26B092C6BD25500C08E37 /* DelicaciaSphereUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DelicaciaSphereUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -385,6 +395,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DelicaciaSphere/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DelicaciaSphere/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -413,6 +424,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DelicaciaSphere/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DelicaciaSphere/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
