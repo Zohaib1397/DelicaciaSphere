@@ -18,7 +18,6 @@ struct Homescreen: View {
     @State var selectedFoodItem: Food?
     @State var showDetailScreen = false
     @Namespace var imageTransition
-    @State var searchText: String = ""
     
     var body: some View {
             ZStack {
@@ -26,20 +25,23 @@ struct Homescreen: View {
                     Color(.systemBackground)
                         .ignoresSafeArea()
                     ScrollView {
-                        VStack {
+                        VStack (spacing: 10){
+                            
+                            // Top bar contains deliver now and current location
+                            // TODO the current location will be updated with user current location
                             TopBar()
-                            OfferCard()
-                            LazyVGrid(columns: [
-                                GridItem(.flexible()),
-                                GridItem(.flexible()),
-                                GridItem(.flexible()),
-                                GridItem(.flexible()),
-                            ]){
-                                CategoryCard(image: "burger", text: "Burger")
-                                CategoryCard(image: "chicken", text: "Chicken")
-                                CategoryCard(image: "fries", text: "Fries")
-                                CategoryCard(image: "drink", text: "Drink")
+                            
+                            //Search bar + qr scan + filter
+                            CustomSearchBar().padding(.bottom, 15)
+                            
+                            ScrollView(.horizontal){
+                                HStack(spacing:10) {
+                                    CategoryCard(image: "burger", text: "Burger")
+                                    CategoryCard(image: "pizza", text: "Pizza")
+                                }
                             }
+                            
+                            OfferCard()
                             HStack{
                                 Text("Recommended for you")
                                     .font(.system(.title2, design: .rounded))
@@ -201,49 +203,53 @@ struct CategoryCard: View{
     var text: String
     
     var body: some View{
-        VStack{
-            Image(image)
-                .resizable()
-                .scaledToFit()
-                
+        VStack(spacing: 6){
+            ZStack{
+                Image(image)
+                    .resizable()
+                    .scaledToFit()
+            }
+            .frame(width: 64, height: 64)
+            .clipShape(.rect(cornerRadius: 10))
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(.black, lineWidth: 0.33))
+            
             Text(text)
-                .font(.system(.callout))
-                .fontWeight(.medium)
-                .foregroundStyle(.gray)
-                .minimumScaleFactor(0.3)
+                .font(.system(size: 11, design: .rounded))
+                .fontWeight(.semibold)
         }
-        .frame(maxWidth: 80, maxHeight: 80)
-        .padding()
-        .background(.white)
-        .clipShape(.rect(cornerRadius: 20))
+        
     }
 }
 
 struct TopBar: View {
     var body: some View {
         HStack{
-            
             VStack(alignment: .leading, spacing: 0){
                 Text("Deliver now")
-                    .font(.system(.callout, design: .rounded))
+                    .font(.system(.footnote))
                     .foregroundStyle(.gray)
                 
                 HStack{
                     Text("Islamabad, Pakistan")
-                        .font(.system(.headline, design: .rounded))
+                        .font(.system(.headline))
                     Image(systemName: "chevron.down")
                 }
                 
             }
             Spacer()
-            Circle()
-                .frame(width: 55, height: 55)
-                .foregroundStyle(.white)
-                .shadow(color: Color(.systemGray4), radius: 30)
-                .overlay{
-                    Image(systemName: "bell")
-                        .font(.system(size: 24))
-                }
+            HStack(spacing: 5){
+                Button("profile", systemImage: "person.fill", action: {})
+                .labelStyle(.iconOnly)
+                .buttonBorderShape(.circle)
+                .buttonStyle(.bordered)
+                .tint(.accentColor)
+                
+                Button("notification", systemImage: "bell", action: {})
+                    .labelStyle(.iconOnly)
+                    .buttonBorderShape(.circle)
+                    .buttonStyle(.borderedProminent)
+                    .tint(.accentColor)
+            }
         }
     }
 }
@@ -284,5 +290,43 @@ struct OfferCard: View {
         }
         .clipped()
         .clipShape(.rect(cornerRadius: 20))
+    }
+}
+
+struct CustomSearchBar: View {
+    
+    @State var searchText: String = ""
+    
+    var body: some View {
+        HStack (spacing: 2){
+            TextField("Search", text: $searchText)
+            
+                .padding(.horizontal, 30)
+                .padding(.vertical, 5)
+                .background(Color(.systemGray6))
+                .clipShape(.rect(cornerRadius: 10))
+                .overlay(alignment: .leading){
+                    Image(systemName: "magnifyingglass")
+                        .padding(8)
+                        .foregroundStyle(.secondary)
+                }
+            
+            Button("qr_scan", systemImage: "qrcode.viewfinder", action: {})
+                .buttonStyle(.bordered)
+                .labelStyle(.iconOnly)
+                .buttonBorderShape(.circle)
+                .tint(.accentColor)
+            
+            
+            Rectangle()
+                .frame(width:0.33, height: 24)
+            
+            Button("filter", systemImage: "line.3.horizontal.decrease.circle", action: {})
+                .buttonStyle(.bordered)
+                .labelStyle(.iconOnly)
+                .buttonBorderShape(.circle)
+                .tint(.accentColor)
+            
+        }
     }
 }
