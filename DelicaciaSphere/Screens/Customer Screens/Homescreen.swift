@@ -62,6 +62,7 @@ struct Homescreen: View {
                             .padding(.horizontal, -16)
                             .scrollIndicators(.hidden)
                             
+                            // TODO add horizontal scroll on multiple offers
                             OfferCard()
                             
                             //Section Title Row
