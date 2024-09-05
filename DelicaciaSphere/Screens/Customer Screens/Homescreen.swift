@@ -10,7 +10,7 @@ import SwiftUI
 struct Homescreen: View {
     
     @EnvironmentObject var viewModel: AuthenticationViewModel
-    var columns: [GridItem] = [
+    var grid_2x2: [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible()),
     ]
@@ -19,11 +19,12 @@ struct Homescreen: View {
     @State var showDetailScreen = false
     @Namespace var imageTransition
     
+    
     var body: some View {
             ZStack {
                 ZStack {
                     Color(.systemBackground)
-                        .ignoresSafeArea()
+                        .ignoresSafeArea(.all)
                     ScrollView {
                         VStack (spacing: 10){
                             
@@ -35,23 +36,42 @@ struct Homescreen: View {
                             CustomSearchBar().padding(.bottom, 15)
                             
                             ScrollView(.horizontal){
-                                HStack(spacing:10) {
-                                    CategoryCard(image: "burger", text: "Burger")
-                                    CategoryCard(image: "pizza", text: "Pizza")
+                                VStack(spacing: 10){
+                                    HStack(spacing:10) {
+                                        Spacer().frame(width: 6)
+                                        CategoryCard(image: "burger", text: "Burger")
+                                        CategoryCard(image: "pizza", text: "Pizza")
+                                        CategoryCard(image: "chicken", text: "Chicken")
+                                        CategoryCard(image: "fries", text: "Fries")
+                                        CategoryCard(image: "nuggets", text: "Nuggets")
+                                        CategoryCard(image: "pasta", text: "Pasta")
+                                        Spacer()
+                                    }
+                                    HStack(spacing:10) {
+                                        Spacer().frame(width: 6)
+                                        CategoryCard(image: "ice_cream", text: "Ice Cream")
+                                        CategoryCard(image: "drinks", text: "Drinks")
+                                        CategoryCard(image: "shawarma", text: "Shawarma")
+                                        CategoryCard(image: "cake", text: "Desserts")
+                                        CategoryCard(image: "paratha", text: "Paratha")
+                                        CategoryCard(image: "biryani", text: "Biryani")
+                                        Spacer()
+                                    }
                                 }
                             }
+                            .padding(.horizontal, -16)
+                            .scrollIndicators(.hidden)
                             
                             OfferCard()
+                            
+                            //Section Title Row
                             HStack{
-                                Text("Recommended for you")
-                                    .font(.system(.title2, design: .rounded))
-                                    .fontWeight(.bold)
+                                SectionTitle("Recommended for you")
                                 Spacer()
-                                Text("See More")
-                                    .underline()
-                                    .font(.system(.callout))
                             }
-                            LazyVGrid(columns: columns){
+                            
+                            
+                            LazyVGrid(columns: grid_2x2){
                                 ForEach(foodList){ foodItem in
                                     ProductCard(foodItem: foodItem, imageTransition: imageTransition)
                                         .onTapGesture {
@@ -61,13 +81,11 @@ struct Homescreen: View {
                                             }
                                         }
                                 }
-                                
                             }
                             
                         }
                         .padding()
                     }
-                    
                 }
                 .background(Color(.systemGray6))
                 .blur(radius: showDetailScreen ? 40 : 0)
@@ -149,53 +167,61 @@ struct ProductCard: View {
     let imageTransition: Namespace.ID
     
     var body: some View {
-        ZStack {
-            VStack(alignment: .leading) {
-                Image(foodItem.image)
-                    .resizable()
-                    .scaledToFit()
-                    .aspectRatio(contentMode: .fit)
-                    .matchedGeometryEffect(id: foodItem.id, in: imageTransition)
-                
+        
+        VStack(alignment: .center) {
+            // Invisible Gap above image
+            Rectangle().frame(height: 50).opacity(0)
+            
+            
+            VStack(spacing: 7){
+                Rectangle().frame(height: 65).opacity(0)
                 Text(foodItem.name)
-                    .font(.system(.headline, design: .rounded))
+                    .font(.system(size: 17, design: .rounded))
                     .fontWeight(.semibold)
                     .lineLimit(2)
-                    .multilineTextAlignment(.leading)
+                    .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .modifier(MeasureHeightModifier(height: $titleHeight))
                 
-                Text(foodItem.description)
-                    .font(.system(.callout))
-                    .lineLimit(titleHeight > 30 ? 1 : 2)
+                HStack(spacing: 10){
+                    
+                    // Rating Section
+                    HStack(spacing: 0){
+                        Image(systemName: "star.fill")
+                            .foregroundStyle(.yellow)
+                        Text("4.7")
+                    }
+                    
+                    // Preparation Time Section
+                    HStack(spacing: 0){
+                        Image(systemName: "clock")
+                        Text("10-15 min")
+                    }
+                    .foregroundStyle(.secondary)
+                }
+                .font(.system(size: 13, design: .rounded))
+                .fontWeight(.semibold)
                 
                 Spacer()
+                Text("Rs.\(foodItem.price)")
+                    .font(.system(size: 17, design: .rounded))
+                    .fontWeight(.semibold)
+                Spacer()
                 
-                HStack {
-                    Text("$\(foodItem.price, specifier: "%.2f")")
-                        .font(.system(.title, design: .rounded))
-                    
-                    Spacer()
-                    
-                    Button {
-                        // Action for the button
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .clipShape(Circle())
-                    .tint(.green)
-                }
             }
-            .padding()
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 0.33)
+                .frame(width: 165, height: 165))
+            .frame(width: 165, height: 165)
+            .overlay(alignment: .top){
+                Image(foodItem.image)
+                    .resizable()
+                    .scaledToFit()
+                    .matchedGeometryEffect(id: foodItem.id, in: imageTransition)
+                    .frame(width: 130, height: 130)
+                    .offset(y: -65)
+                
+            }
         }
-        .overlay(
-            AnimatedHeart(size: 24)
-                .padding(),
-            alignment: .topTrailing
-        )
-        .background(Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: 25))
     }
 }
 struct CategoryCard: View{
@@ -204,14 +230,13 @@ struct CategoryCard: View{
     
     var body: some View{
         VStack(spacing: 6){
-            ZStack{
-                Image(image)
-                    .resizable()
-                    .scaledToFit()
-            }
-            .frame(width: 64, height: 64)
-            .clipShape(.rect(cornerRadius: 10))
-            .overlay(RoundedRectangle(cornerRadius: 10).stroke(.black, lineWidth: 0.33))
+            Image(image)
+                .resizable()
+                .scaledToFit()
+                .padding(5)
+                .frame(width: 64, height: 64)
+                .clipShape(.rect(cornerRadius: 10))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(.black, lineWidth: 0.33))
             
             Text(text)
                 .font(.system(size: 11, design: .rounded))
@@ -257,15 +282,17 @@ struct TopBar: View {
 struct OfferCard: View {
     var body: some View {
         HStack{
-            VStack(alignment: .leading){
-                Text("Free Delivery For Spaghetti")
-                    .font(.system(.title))
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: 300, alignment: .leading)
+            VStack(alignment: .leading, spacing: 6){
+                Text("Hot & Crispy Offer")
+                    .font(.custom("ButterChicken", size: 28))
+                    .foregroundStyle(.primary)
+                    .frame(maxWidth: 300, maxHeight: 22, alignment: .leading)
                     .lineLimit(2)
-                Text("Up to 3 times per day")
-                    .foregroundStyle(.white)
+                Text("Get up-to 20% off.")
+                    .font(.system(size: 13, design: .rounded))
+                Text("on your first order")
+                    .font(.system(size: 11, design: .rounded))
+                    .foregroundStyle(.primary)
                 Button{
                     
                 } label : {
@@ -273,23 +300,32 @@ struct OfferCard: View {
                 }
                 
                 .buttonStyle(.borderedProminent)
-                .tint(Color(.green))
-                .clipShape(.rect(cornerRadius: 25))
+                .tint(.accentColor)
+                .controlSize(.small)
             }
             .padding(20)
             
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.linearGradient(Gradient(colors: [.black.opacity(0.7), .black]), startPoint: .top, endPoint: .bottom))
+        .background{
+            Image("doodle")
+                .resizable()
+                .scaledToFill()
+        }
         .overlay(alignment: .trailing){
-            Image("spaghetti")
+            Image("deal")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 250, height: 250)
-                .offset(x: 100)
+                .frame(maxWidth: 165)
+                
+        }
+        .clipShape(.rect(cornerRadius: 10))
+        .overlay{
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(.black, lineWidth: 0.4)
         }
         .clipped()
-        .clipShape(.rect(cornerRadius: 20))
+        
     }
 }
 

@@ -24,10 +24,10 @@ class Food: Identifiable {
     var proteins: CGFloat
     var fats: CGFloat
     var carbo: CGFloat
-    var price: CGFloat
+    var price: Int
     var category: FoodCategory
     
-    init(name: String, description: String, image: String, kcal: CGFloat, proteins: CGFloat, fats: CGFloat, carbo: CGFloat, price: CGFloat, category: FoodCategory) {
+    init(name: String, description: String, image: String, kcal: CGFloat, proteins: CGFloat, fats: CGFloat, carbo: CGFloat, price: Int, category: FoodCategory) {
         self.name = name
         self.description = description
         self.image = image
@@ -42,14 +42,14 @@ class Food: Identifiable {
 }
 
 let foodList: [Food] = [
-    Food(name: "Classic Cheeseburger",
+    Food(name: "Chicken Burger",
          description: "A juicy beef patty topped with melted cheese, fresh lettuce, and tomatoes.",
          image: "burger",
          kcal: 450,
          proteins: 25,
          fats: 22,
          carbo: 35,
-         price: 5.99,
+         price: 350,
          category: .burger),
     
     Food(name: "Pepperoni Pizza",
@@ -59,7 +59,7 @@ let foodList: [Food] = [
          proteins: 12,
          fats: 14,
          carbo: 33,
-         price: 7.99,
+         price: 1250,
          category: .pizza),
     
     Food(name: "Grilled Chicken Sandwich",
@@ -69,7 +69,7 @@ let foodList: [Food] = [
          proteins: 35,
          fats: 15,
          carbo: 35,
-         price: 6.99,
+         price: 500,
          category: .chicken),
     
     Food(name: "Coca-Cola",
@@ -79,7 +79,7 @@ let foodList: [Food] = [
          proteins: 0,
          fats: 0,
          carbo: 40,
-         price: 1.50,
+         price: 150,
          category: .drink),
     
     Food(name: "Crispy French Fries",
@@ -89,6 +89,6 @@ let foodList: [Food] = [
          proteins: 4,
          fats: 15,
          carbo: 45,
-         price: 2.99,
+         price: 130,
          category: .fries)
 ]
