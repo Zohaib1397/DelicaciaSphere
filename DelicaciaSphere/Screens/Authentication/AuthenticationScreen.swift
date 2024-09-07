@@ -14,21 +14,23 @@ struct AuthenticationScreen: View {
     
     var body: some View {
         ZStack {
-            Group{
-                Color(.secondarySystemBackground)
-                    .ignoresSafeArea()
-                Image("doodle")
-                    .resizable()
-                    .ignoresSafeArea()
-            } //Background Color + Doodle
-            
+            if !viewModel.isAuthenticated {
+                Group{
+                    Color(.secondarySystemBackground)
+                        .ignoresSafeArea()
+                    Image("doodle")
+                        .resizable()
+                        .ignoresSafeArea()
+                } //Background Color + Doodle
+            }
             VStack{
-                Image("Logo")
-                    .resizable()
-                    .scaledToFit()
-                    .shadow(radius: 29, x: 0, y: 4)
-                    .frame(maxWidth: 244)
-                
+                if !viewModel.isAuthenticated{
+                    Image("Logo")
+                        .resizable()
+                        .scaledToFit()
+                        .shadow(radius: 29, x: 0, y: 4)
+                        .frame(maxWidth: 244)
+                }
                 if viewModel.showSignupScreen {
                     Signupscreen(showSignupScreen: $viewModel.showSignupScreen)
                         .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .trailing)))

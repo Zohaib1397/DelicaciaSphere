@@ -20,26 +20,33 @@ struct NavigationBar: View {
         ]
     
     var body: some View {
-        HStack{
-            ForEach(0..<navigationList.count, id: \.self){ index in
-                let item = navigationList[index]
-                NavigationPill(
-                    title:item.title,
-                    icon: item.icon,
-                    selected: page.rawValue == (index + 1))
-                .onTapGesture {
-                    withAnimation(.spring.speed(3)){
-                        page = NavigationPage(rawValue: index + 1) ?? .Home
+        ZStack{
+//            Rectangle()
+//                .frame(height: 88)
+//                .foregroundStyle(LinearGradient(colors: [.white.opacity(0), .white], startPoint: .top, endPoint: .bottom))
+                
+            HStack{
+                ForEach(0..<navigationList.count, id: \.self){ index in
+                    let item = navigationList[index]
+                    NavigationPill(
+                        title:item.title,
+                        icon: item.icon,
+                        selected: page.rawValue == (index + 1))
+                    .onTapGesture {
+                        withAnimation(.spring.speed(3)){
+                            page = NavigationPage(rawValue: index + 1) ?? .Home
+                        }
+                        
                     }
-                    
                 }
+                
             }
-            
+            .padding(15)
+            .background(Color(.systemBackground))
+            .clipShape(.rect(cornerRadius: .infinity))
+            .shadow(color: .black.opacity(0.25), radius: 30, y: 4)
         }
-        .padding(6)
-        .background(Color(.systemGray6))
-        .clipShape(.rect(cornerRadius: .infinity))
-    }
+        }
 }
 
 #Preview {
@@ -67,8 +74,8 @@ struct NavigationPill: View{
                     .font(.system(size: 12))
             }
         }
-        .padding()
-        .padding(.horizontal, 5)
+        .padding(10)
+        .padding(.horizontal, 10)
         .background(selected ? Color(.accent) : nil)
         .foregroundStyle(selected ? Color(.white) : Color("icon.disabled"))
         .fontWeight(.medium)

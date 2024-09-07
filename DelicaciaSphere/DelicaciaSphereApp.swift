@@ -14,7 +14,8 @@ struct DelicaciaSphereApp: App {
     var authenticationViewModel = AuthenticationViewModel()
     var body: some Scene {
         WindowGroup {
-            AuthenticationScreen().environmentObject(authenticationViewModel)
+//            AuthenticationScreen().environmentObject(authenticationViewModel)
+            Homescreen().environmentObject(authenticationViewModel)
         }
         .modelContainer(for: [User.self])
     }

@@ -22,6 +22,7 @@ struct Homescreen: View {
     
     var body: some View {
             ZStack {
+                
                 ZStack {
                     Color(.systemBackground)
                         .ignoresSafeArea(.all)
@@ -31,7 +32,9 @@ struct Homescreen: View {
                             // Top bar contains deliver now and current location
                             // TODO the current location will be updated with user current location
                             TopBar()
+                                .padding(.top, 0)
                             
+                        
                             //Search bar + qr scan + filter
                             CustomSearchBar().padding(.bottom, 15)
                             
@@ -63,7 +66,20 @@ struct Homescreen: View {
                             .scrollIndicators(.hidden)
                             
                             // TODO add horizontal scroll on multiple offers
-                            OfferCard()
+//                            GeometryReader{ geometry in
+                                ScrollView(.horizontal){
+                                    HStack{
+                                        Spacer().frame(width: 16)
+                                        OfferCard()
+                                        OfferCard()
+                                        Spacer()
+                                    }
+                                    
+                                    
+                                }
+                                .padding(.horizontal, -16)
+//                            }
+                            
                             
                             //Section Title Row
                             HStack{
@@ -86,14 +102,35 @@ struct Homescreen: View {
                             
                         }
                         .padding()
+                        .blur(radius: showDetailScreen ? 40 : 0)
                     }
+                    
                 }
-                .background(Color(.systemGray6))
-                .blur(radius: showDetailScreen ? 40 : 0)
+                .scrollIndicators(.hidden)
+                .overlay(alignment: .bottom){
+                    ZStack {
+                        
+                        Rectangle()
+                            .frame(height: 100)
+                            .foregroundStyle(LinearGradient(colors: [.white.opacity(0), .white], startPoint: .top, endPoint: .bottom))
+                        
+                        NavigationBar()
+                            .padding(.bottom, 20)
+                            
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                    .ignoresSafeArea(edges: .bottom)
+                }
+                
                 if showDetailScreen {
                     FoodDetailScreen(foodItem: selectedFoodItem ?? foodList.first!, showDetailScreen: $showDetailScreen, imageTransition: imageTransition)
+                        .transition(.opacity)
+                        
                 }
+                    
+                
             }
+           
     }
 }
 
@@ -279,56 +316,59 @@ struct TopBar: View {
         }
     }
 }
-
 struct OfferCard: View {
     var body: some View {
-        HStack{
-            VStack(alignment: .leading, spacing: 6){
+        HStack {
+            VStack(alignment: .leading, spacing: 6) {
                 Text("Hot & Crispy Offer")
                     .font(.custom("ButterChicken", size: 28))
                     .foregroundStyle(.primary)
-                    .frame(maxWidth: 300, maxHeight: 22, alignment: .leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(2)
-                Text("Get up-to 20% off.")
+
+                Text("Get up to 20% off.")
                     .font(.system(size: 13, design: .rounded))
+
                 Text("on your first order")
                     .font(.system(size: 11, design: .rounded))
                     .foregroundStyle(.primary)
-                Button{
-                    
-                } label : {
+
+                Button {
+                    // Action
+                } label: {
                     Text("Order Now")
                 }
-                
                 .buttonStyle(.borderedProminent)
                 .tint(.accentColor)
                 .controlSize(.small)
             }
             .padding(20)
-            
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background{
+        
+        .background(Color.white)
+        .overlay {
             Image("doodle")
                 .resizable()
                 .scaledToFill()
+                .allowsHitTesting(false)
         }
-        .overlay(alignment: .trailing){
+        .overlay(alignment: .trailing) {
             Image("deal")
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 165)
-                
         }
-        .clipShape(.rect(cornerRadius: 10))
-        .overlay{
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .overlay {
             RoundedRectangle(cornerRadius: 10)
-                .stroke(.black, lineWidth: 0.4)
+                .stroke(Color.black, lineWidth: 0.4)
         }
         .clipped()
-        
+        .frame(width: UIScreen.main.bounds.width - 32)
     }
 }
+
+
 
 struct CustomSearchBar: View {
     
