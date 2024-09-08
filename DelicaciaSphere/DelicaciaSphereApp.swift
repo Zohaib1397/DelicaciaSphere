@@ -15,7 +15,7 @@ struct DelicaciaSphereApp: App {
     var body: some Scene {
         WindowGroup {
 //            AuthenticationScreen().environmentObject(authenticationViewModel)
-            Homescreen().environmentObject(authenticationViewModel)
+            DrinkSelector(selectedIndex: .constant(1)).environmentObject(authenticationViewModel)
         }
         .modelContainer(for: [User.self])
     }
