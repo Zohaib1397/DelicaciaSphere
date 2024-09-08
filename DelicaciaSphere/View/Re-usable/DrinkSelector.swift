@@ -1,38 +1,50 @@
 import SwiftUI
+import AudioToolbox
 
 struct DrinkSelector: View {
     
     @Binding var selectedIndex: Int?
-    
-    var itemHeight: CGFloat = 120.0
-    var menuHeightMultiplier: CGFloat = 5
+    var soundId: SystemSoundID = 1105
     
     var body: some View {
-        ScrollView(.horizontal){
-            HStack{
-                ForEach(0..<drinks.count, id: \.self){ index in
-                    let drink = drinks[index]
-//                    let indexDiff = Double(index-(selectedIndex ?? 0))
-                    Image(drink)
-                        .resizable()
-                        .scaledToFit()
-                        .scaleEffect(selectedIndex == index ? 1.2 : 1)
-                        .animation(.bouncy, value: selectedIndex)
-                        .id(index)
-                        .frame(height: itemHeight)
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal) {
+                HStack {
+                    Spacer().frame(width: 170)
+                    ForEach(0..<drinks.count, id: \.self) { index in
+                        let drink = drinks[index]
+                        Image(drink)
+                            .resizable()
+                            .scaledToFit()
+                            .scaleEffect(selectedIndex == index ? 1 : 0.8)
+                            .animation(.bouncy, value: selectedIndex)
+                            .id(index)
+                            .frame(height: 173.5)
+                    }
+                    Spacer().frame(width: 170)
+                }
+                .scrollTargetLayout()
+                .onAppear {
+                    if let index = selectedIndex {
+                        proxy.scrollTo(index, anchor: .center)
+                    }
                 }
             }
-            .scrollTargetLayout()
         }
         .scrollPosition(id: $selectedIndex, anchor: .center)
         .scrollTargetBehavior(.viewAligned)
         .scrollIndicators(.hidden)
-        .overlay(
+        .onChange(of: selectedIndex, initial: false) {
+                    AudioServicesPlaySystemSound(soundId)
+        }
+        .overlay {
             RoundedRectangle(cornerRadius: 10)
-                .stroke(.black, lineWidth: 10)
-        )
+                .stroke(Color(.systemGray), lineWidth: 10)
+                .frame(width: 65, height: 190)
+        }
     }
 }
+
 let drinks = [
     "pepsi",
     "cocacola",
@@ -43,35 +55,7 @@ let drinks = [
     "nextcola",
     "dew",
     "mirinda",
-    
-    "pepsi",
-    "cocacola",
-    "fanta",
-    "7up",
-    "sprite",
-    "sting",
-    "nextcola",
-    "dew",
-    "mirinda",
-    "pepsi",
-    "cocacola",
-    "fanta",
-    "7up",
-    "sprite",
-    "sting",
-    "nextcola",
-    "dew",
-    "mirinda",
-    "pepsi",
-    "cocacola",
-    "fanta",
-    "7up",
-    "sprite",
-    "sting",
-    "nextcola",
-    "dew",
-    "mirinda"
-    ]
+]
 
 struct WheelPickerDemo: View {
     
@@ -84,11 +68,9 @@ struct WheelPickerDemo: View {
                 .padding()
                 .background(RoundedRectangle(cornerRadius: 16))
             DrinkSelector(selectedIndex: $selectedIndex)
-
         }
     }
 }
-
 
 #Preview {
     WheelPickerDemo()
