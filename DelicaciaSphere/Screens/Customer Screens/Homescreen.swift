@@ -65,21 +65,18 @@ struct Homescreen: View {
                             .padding(.horizontal, -16)
                             .scrollIndicators(.hidden)
                             
-                            // TODO add horizontal scroll on multiple offers
-//                            GeometryReader{ geometry in
-                                ScrollView(.horizontal){
-                                    HStack{
-                                        Spacer().frame(width: 16)
-                                        OfferCard()
-                                        OfferCard()
-                                        Spacer()
-                                    }
-                                    
-                                    
+                            // TODO add realtime offers
+                            ScrollView(.horizontal){
+                                HStack{
+                                    Spacer().frame(width: 16)
+                                    OfferCard()
+                                    OfferCard()
+                                    Spacer()
                                 }
-                                .padding(.horizontal, -16)
-//                            }
-                            
+                                
+                                
+                            }
+                            .padding(.horizontal, -16)
                             
                             //Section Title Row
                             HStack{
@@ -143,39 +140,6 @@ struct Homescreen: View {
     ProductCard(foodItem: foodList.first!, imageTransition:  testing)
 }
 
-#Preview("Animated Heart", traits: .sizeThatFitsLayout){
-    AnimatedHeart(size: 24)
-}
-
-struct AnimatedHeart: View{
-    
-    var size: CGFloat
-    @State var clicked: Bool = false
-    
-    var body: some View{
-        Image(systemName: "heart.fill")
-            .resizable()
-            .scaledToFit()
-            .frame(width: size, height: size)
-            .foregroundStyle(clicked ? .red : Color(.systemGray4))
-            .phaseAnimator([true, false], trigger: clicked, content: { content, phase in
-                content
-                    .scaleEffect(phase ? 1.0 : 0.5)
-            }, animation: { phase in
-                switch phase {
-                case true: .spring.speed(3)
-                case false: .spring.speed(2)
-                }
-            }
-            )
-            .onTapGesture {
-                withAnimation(.spring(duration: 0.1, bounce: 0.5)){
-                    clicked.toggle()
-                }
-                
-            }
-    }
-}
 
 struct HeightPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
@@ -279,6 +243,7 @@ struct CategoryCard: View{
             Text(text)
                 .font(.system(size: 11, design: .rounded))
                 .fontWeight(.semibold)
+                .multilineTextAlignment(.center)
         }
         
     }
@@ -301,17 +266,9 @@ struct TopBar: View {
             }
             Spacer()
             HStack(spacing: 5){
-                Button("profile", systemImage: "person.fill", action: {})
-                .labelStyle(.iconOnly)
-                .buttonBorderShape(.circle)
-                .buttonStyle(.bordered)
-                .tint(.accentColor)
+                CircularIconButton(label: "profile", image: "person.fill", size: .regular, action: {})
+                CircularProminentIconButton(label: "notification", image: "bell", size: .regular, action: {})
                 
-                Button("notification", systemImage: "bell", action: {})
-                    .labelStyle(.iconOnly)
-                    .buttonBorderShape(.circle)
-                    .buttonStyle(.borderedProminent)
-                    .tint(.accentColor)
             }
         }
     }
