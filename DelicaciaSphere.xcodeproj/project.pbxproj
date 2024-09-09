@@ -37,11 +37,25 @@
 			);
 			target = 52E26AEB2C6BD25200C08E37 /* DelicaciaSphere */;
 		};
+		528BA8F52C8EF3E8006887F0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DelicaciaSphereTests.swift,
+			);
+			target = 52E26AEB2C6BD25200C08E37 /* DelicaciaSphere */;
+		};
+		528BA8F62C8EF3E8006887F0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DelicaciaSphereTests.swift,
+			);
+			target = 52E26AFB2C6BD25500C08E37 /* DelicaciaSphereTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		528BA8F32C8EF3E7006887F0 /* DelicaciaSphereTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (528BA8F52C8EF3E8006887F0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 528BA8F62C8EF3E8006887F0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DelicaciaSphereTests; sourceTree = "<group>"; };
 		52E26AEE2C6BD25200C08E37 /* DelicaciaSphere */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (5235A1B42C87299300B89CEC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DelicaciaSphere; sourceTree = "<group>"; };
-		52E26AFF2C6BD25500C08E37 /* DelicaciaSphereTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DelicaciaSphereTests; sourceTree = "<group>"; };
 		52E26B092C6BD25500C08E37 /* DelicaciaSphereUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DelicaciaSphereUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -73,8 +87,8 @@
 		52E26AE32C6BD25200C08E37 = {
 			isa = PBXGroup;
 			children = (
+				528BA8F32C8EF3E7006887F0 /* DelicaciaSphereTests */,
 				52E26AEE2C6BD25200C08E37 /* DelicaciaSphere */,
-				52E26AFF2C6BD25500C08E37 /* DelicaciaSphereTests */,
 				52E26B092C6BD25500C08E37 /* DelicaciaSphereUITests */,
 				52E26AED2C6BD25200C08E37 /* Products */,
 			);
@@ -106,6 +120,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				528BA8F32C8EF3E7006887F0 /* DelicaciaSphereTests */,
 				52E26AEE2C6BD25200C08E37 /* DelicaciaSphere */,
 			);
 			name = DelicaciaSphere;
@@ -127,9 +142,6 @@
 			);
 			dependencies = (
 				52E26AFE2C6BD25500C08E37 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				52E26AFF2C6BD25500C08E37 /* DelicaciaSphereTests */,
 			);
 			name = DelicaciaSphereTests;
 			packageProductDependencies = (
