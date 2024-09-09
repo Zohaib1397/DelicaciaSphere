@@ -7,7 +7,6 @@ struct DrinkSelector: View {
     @Binding var selectedIndex: Int?
     var soundId: SystemSoundID = 1105
     
-    var menuWidthMultiplier: CGFloat = 5
     let maxScale: CGFloat = 1  // Maximum scale for the selected item
     let minScale: CGFloat = 0.4  // Minimum scale for distant items
     let scaleRange: Int = 4      // How many items on each side to scale
@@ -20,31 +19,17 @@ struct DrinkSelector: View {
                     ForEach(0..<drinks.count, id: \.self) { index in
                         
                         let drink = drinks[index]
-                        let distance = abs((selectedIndex ?? 0) - index)  // Calculate the distance from the selected index
-                        let scale = scaleEffectForDistance(distance: distance)  // Determine the scale based on distance
+                        let distance = abs((selectedIndex ?? 0) - index)
+                        let scale = scaleEffectForDistance(distance: distance)
                         
-                        Image(drink.name)
-                            .resizable()
-                            .scaledToFit()
-                            .scaleEffect(scale)  // Apply the scale effect
-                            .animation(.bouncy.speed(3), value: selectedIndex)
-                            .id(index)
-                            .overlay {
-                                if selectedIndex == index {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color(.systemGray), lineWidth: 10)
-                                        .padding(.horizontal, -10)
-                                        .frame(height: 190)
-                                }
-                            }
-                            .frame(height: drink.type == .bottle ? 173.5 : drink.type == .can ? 120 : 105)
+                        BottleImage(drink: drink, scale: scale, selectedIndex: $selectedIndex, index: index)
                             
                     }
                     
                 }
                 .padding(.vertical, 20)
                 .scrollTargetLayout()
-                .padding(.horizontal, 35 * menuWidthMultiplier)
+                .padding(.horizontal, 35 * 5)
                 .onAppear {
                     if let index = selectedIndex {
                         proxy.scrollTo(index, anchor: .center)
@@ -52,11 +37,25 @@ struct DrinkSelector: View {
                 }
             }
         }
+        .background{
+            RoundedRectangle(cornerRadius: 10)
+                .fill(
+                    .shadow(.inner(color: .black, radius: 7.3, x: 0, y: 1))
+                )
+                .foregroundStyle(Color(.tertiarySystemFill))
+                .frame(height: 180)
+        }
         .scrollPosition(id: $selectedIndex, anchor: .center)
         .scrollTargetBehavior(.viewAligned)
         .scrollIndicators(.hidden)
         .onChange(of: selectedIndex, initial: false) {
             AudioServicesPlaySystemSound(soundId)
+        }
+        .overlay{
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.linearGradient(colors: [.white, .white.opacity(0.70), .white.opacity(0),.white.opacity(0), .white.opacity(0), .white.opacity(0.70), .white], startPoint: .leading, endPoint: .trailing))
+                .blur(radius: 40)
+                .allowsHitTesting(false)
         }
     }
     
@@ -113,3 +112,43 @@ struct WheelPickerDemo: View {
 #Preview {
     WheelPickerDemo()
 }
+
+struct SelectionBoarder: View {
+    var body: some View {
+        Image("Subtract")
+            .resizable()
+            .scaledToFit()
+            .padding(.horizontal, -10)
+            .frame(width: 55, height: 250)
+            .zIndex(3)
+    }
+}
+
+struct BottleImage: View {
+    var drink: (name: String, type: RefreshingDrinkType)
+    var scale: CGFloat
+    @Binding var selectedIndex: Int?
+    var index: Int
+
+    var body: some View {
+        Image(drink.name)
+            .resizable()
+            .scaledToFit()
+            .scaleEffect(scale)  // Apply the scale effect
+            .animation(.bouncy.speed(3), value: selectedIndex)
+            .id(index)
+            .overlay {
+                if selectedIndex == index {
+                    SelectionBoarder()
+                }
+            }
+            .frame(height: drink.type == .bottle ? 173.5 : drink.type == .can ? 120 : 105)
+            .shadow(radius: 5, y: 4)
+            .onTapGesture {
+                withAnimation{
+                    selectedIndex = index
+                }
+            }
+    }
+}
+
