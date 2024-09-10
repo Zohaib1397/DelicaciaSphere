@@ -31,20 +31,7 @@ struct FoodDetailScreen: View {
                 CircularIconButton(label: "back", image: "chevron.left",size: .regular, action: {
                     withAnimation{showDetailScreen.toggle()}
                 })
-                HStack(alignment: .center) {
-                    Image(foodItem.image)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: 60)
-                        .shadow(radius: 25, y: 7)
-                        .matchedGeometryEffect(id: foodItem.id, in: imageTransition)
-                //Title
-               
-                    Text(foodItem.name)
-                        .font(.system(size: 17, design: .rounded))
-                    
-                }
-                .fontWeight(.heavy)
+                
                 Spacer()
                 
                 //Custom circular button animated Heart
@@ -57,45 +44,47 @@ struct FoodDetailScreen: View {
             }
             .zIndex(1)
             // Image Row with product images
-//            HStack {
-//                Spacer()
-//                Image(foodItem.image)
-//                    .resizable()
-//                    .scaledToFit()
-//                    .frame(maxWidth: 265)
-//                    .shadow(radius: 25, y: 7)
-//                    .matchedGeometryEffect(id: foodItem.id, in: imageTransition)
-//                Spacer()
-//            }
-//            .overlay{
-//                Image(foodItem.image)
-//                    .resizable()
-//                    .scaledToFit()
-//                    .frame(maxWidth: 265)
-//                    .shadow(radius: 25, y: 7)
-//                    .offset(x: -280, y: -40)
-//                Image(foodItem.image)
-//                    .resizable()
-//                    .scaledToFit()
-//                    .frame(maxWidth: 265)
-//                    .shadow(radius: 25, y: 7)
-//                    .offset(x: 280, y: -40)
-//            }
-//            .zIndex(0)
+            HStack {
+                Spacer()
+                Image(foodItem.image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 265)
+                    .shadow(radius: 25, y: 7)
+                    .matchedGeometryEffect(id: foodItem.id, in: imageTransition)
+                Spacer()
+            }
+            .overlay{
+                Image(foodItem.image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 265)
+                    .shadow(radius: 25, y: 7)
+                    .offset(x: -280, y: -40)
+                Image(foodItem.image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 265)
+                    .shadow(radius: 25, y: 7)
+                    .offset(x: 280, y: -40)
+            }
+            .zIndex(0)
+            //Title
+            HStack(alignment: .bottom) {
+                Text(foodItem.name)
+                    .font(.system(size: 28, design: .rounded))
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 17, design: .rounded))
+                    .padding(.bottom, 5)
+                Spacer()
+                
+            }
+            .fontWeight(.heavy)
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 10){
                     
-//                    //Title
-//                    HStack(alignment: .bottom) {
-//                        Text(foodItem.name)
-//                            .font(.system(size: 28, design: .rounded))
-//                        Image(systemName: "chevron.down")
-//                            .font(.system(size: 17, design: .rounded))
-//                            .padding(.bottom, 5)
-//                        
-//                    }
-//                    .fontWeight(.heavy)
+                    
                     
                     //Description
                     Text(foodItem.description)
